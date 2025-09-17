@@ -1,0 +1,1 @@
+![Arquitetura Local](misc/arquitetura_local.drawio.png)
