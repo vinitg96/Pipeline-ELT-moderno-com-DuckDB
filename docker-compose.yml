@@ -1,0 +1,42 @@
+# mkdir -p ~/minio/data
+
+# docker run \
+#    -p 9000:9000 \
+#    -p 9001:9001 \
+#    --name minio \
+#    -v ~/minio/data:/data \
+#    -e "MINIO_ROOT_USER=ROOTNAME" \
+#    -e "MINIO_ROOT_PASSWORD=CHANGEME123" \
+#    quay.io/minio/minio server /data --console-address ":9001"
+
+
+version: '3.8'
+
+services:
+  minio:
+    image: minio/minio
+    container_name: minio
+    ports:
+      - '9000:9000'
+      - '9001:9001'
+    volumes:
+      - ./minio:/data
+    environment:
+      - MINIO_ROOT_USER=minio123
+      - MINIO_ROOT_PASSWORD=minio123
+    command: minio server /data --console-address ":9001"
+  
+  mc:
+    image: minio/mc
+    volumes:
+      - ./datawarehouse/:/data/dw/
+      - ./data/:/data/raw/
+      - ./utils/buckets_config.sh:/scripts/setup.sh
+    entrypoint: /bin/bash /scripts/setup.sh
+    container_name: mc
+    depends_on:
+      - minio
+
+
+    
+    
