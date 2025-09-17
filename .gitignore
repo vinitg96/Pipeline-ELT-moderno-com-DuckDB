@@ -8,3 +8,11 @@ wheels/
 
 # Virtual environments
 .venv
+
+
+# Ignorar tudo dentro da pasta minio
+minio/*
+# Mas não ignorar a própria pasta
+!minio/.gitkeep
+
+
